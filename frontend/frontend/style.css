@@ -1,49 +1,46 @@
 body {
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(to right, #f0f4f8, #ffffff);
+  background: linear-gradient(to right, #eef2f3, #ffffff);
   margin: 0;
   padding: 0;
 }
 
 /* Navbar */
 .navbar {
-  background-color: #005fa3;
+  background-color: #0077cc;
   padding: 16px;
   color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-weight: 600;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .navbar .logo {
-  font-size: 22px;
-  letter-spacing: 0.5px;
+  font-size: 20px;
 }
 
 .navbar .tagline {
   font-size: 14px;
-  opacity: 0.85;
-  font-style: italic;
+  opacity: 0.9;
 }
 
 /* Form card */
 form {
   max-width: 700px;
   margin: 50px auto;
-  background: rgba(255, 255, 255, 0.98);
+  background: rgba(255, 255, 255, 0.95);
   padding: 40px;
   border-radius: 16px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
 }
 
 /* Heading */
 h2 {
   text-align: center;
-  color: #005fa3;
+  color: #0077cc;
   margin-bottom: 30px;
-  font-size: 26px;
 }
 
 /* Labels and inputs */
@@ -51,7 +48,7 @@ label {
   display: block;
   font-weight: 600;
   margin-top: 20px;
-  color: #333;
+  color: #222;
 }
 
 input, select, button {
@@ -62,18 +59,17 @@ input, select, button {
   border: 1px solid #ccc;
   font-size: 15px;
   transition: all 0.3s ease;
-  background-color: #f9f9f9;
 }
 
 input:focus, select:focus {
   outline: none;
-  border-color: #005fa3;
-  box-shadow: 0 0 0 4px rgba(0, 95, 163, 0.15);
+  border-color: #0077cc;
+  box-shadow: 0 0 0 3px rgba(0, 119, 204, 0.1);
 }
 
 /* Submit button */
 button {
-  background-color: #005fa3;
+  background-color: #0077cc;
   color: white;
   font-weight: bold;
   border: none;
@@ -83,19 +79,13 @@ button {
 }
 
 button:hover {
-  background-color: #004b85;
-  transform: translateY(-2px);
+  background-color: #005fa3;
+  transform: translateY(-1px);
 }
 
-/* Map styling */
 #map {
   height: 300px;
   margin-top: 10px;
   border-radius: 10px;
   border: 2px solid #ccc;
-  transition: border-color 0.3s ease;
-}
-
-#map:hover {
-  border-color: #005fa3;
 }
