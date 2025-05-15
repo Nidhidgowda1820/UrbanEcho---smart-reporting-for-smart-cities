@@ -3,60 +3,59 @@ console.log("Script loaded");
 let selectedCoords = null;
 let marker = null;
 
-// Initialize Leaflet map
+// Initialize Leaflet map with default center over India
 const map = L.map('map').setView([20.5937, 78.9629], 5);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
-// Try to get user's location and add draggable marker there
+// Auto-detect user location and set map view & marker
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(
     (position) => {
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
-
-      // Set map view to user location with zoom
-      map.setView([lat, lng], 15);
-
+      const userLatLng = [position.coords.latitude, position.coords.longitude];
+      map.setView(userLatLng, 13); // Zoom in to user location
+      
+      // Remove existing marker if any
+      if (marker) {
+        map.removeLayer(marker);
+      }
+      
       // Add draggable marker at user location
-      marker = L.marker([lat, lng], { draggable: true }).addTo(map);
+      marker = L.marker(userLatLng, { draggable: true }).addTo(map);
       selectedCoords = marker.getLatLng();
-
-      marker.bindPopup("Drag to mark issue location").openPopup();
-
-      // Update selectedCoords when marker is dragged
-      marker.on('dragend', function(e) {
+      
+      // Update selectedCoords on marker drag
+      marker.on('dragend', function (e) {
         selectedCoords = e.target.getLatLng();
-        console.log("Marker moved to:", selectedCoords);
       });
     },
-    (err) => {
-      console.warn("Geolocation failed or denied:", err.message);
-      alert("Could not get your location. Please click on the map to select location.");
+    (error) => {
+      console.warn(`Geolocation error: ${error.message}`);
+      // If error, just keep default map center & no marker
     }
   );
 } else {
-  alert("Geolocation not supported by your browser. Please click on the map to select location.");
+  console.warn("Geolocation is not supported by this browser.");
 }
 
-// Click map to set or move marker manually
+// Click map to set marker manually (overrides auto-location)
 map.on('click', function (e) {
   selectedCoords = e.latlng;
 
   if (marker) {
-    marker.setLatLng(selectedCoords);
-  } else {
-    marker = L.marker(selectedCoords, { draggable: true }).addTo(map);
-    // Update selectedCoords on drag
-    marker.on('dragend', function(e) {
-      selectedCoords = e.target.getLatLng();
-      console.log("Marker moved to:", selectedCoords);
-    });
+    map.removeLayer(marker);
   }
+
+  marker = L.marker(selectedCoords, { draggable: true }).addTo(map);
+  
+  // Update selectedCoords when dragged
+  marker.on('dragend', function (e) {
+    selectedCoords = e.target.getLatLng();
+  });
 });
 
-// Submit form handler (your existing code)
+// Form submit handler
 document.getElementById("reportForm").addEventListener("submit", async function (e) {
   e.preventDefault();
   console.log("Form submitted");
@@ -94,6 +93,7 @@ document.getElementById("reportForm").addEventListener("submit", async function 
         marker = null;
         selectedCoords = null;
       }
+      // Optionally reset map view to default or user location
     } else {
       alert("Failed to submit report: " + result.error);
     }
