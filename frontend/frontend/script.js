@@ -9,18 +9,54 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
-// Click to set marker
+// Try to get user's location and add draggable marker there
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+
+      // Set map view to user location with zoom
+      map.setView([lat, lng], 15);
+
+      // Add draggable marker at user location
+      marker = L.marker([lat, lng], { draggable: true }).addTo(map);
+      selectedCoords = marker.getLatLng();
+
+      marker.bindPopup("Drag to mark issue location").openPopup();
+
+      // Update selectedCoords when marker is dragged
+      marker.on('dragend', function(e) {
+        selectedCoords = e.target.getLatLng();
+        console.log("Marker moved to:", selectedCoords);
+      });
+    },
+    (err) => {
+      console.warn("Geolocation failed or denied:", err.message);
+      alert("Could not get your location. Please click on the map to select location.");
+    }
+  );
+} else {
+  alert("Geolocation not supported by your browser. Please click on the map to select location.");
+}
+
+// Click map to set or move marker manually
 map.on('click', function (e) {
   selectedCoords = e.latlng;
 
   if (marker) {
-    map.removeLayer(marker);
+    marker.setLatLng(selectedCoords);
+  } else {
+    marker = L.marker(selectedCoords, { draggable: true }).addTo(map);
+    // Update selectedCoords on drag
+    marker.on('dragend', function(e) {
+      selectedCoords = e.target.getLatLng();
+      console.log("Marker moved to:", selectedCoords);
+    });
   }
-
-  marker = L.marker(selectedCoords).addTo(map);
 });
 
-// Submit form handler
+// Submit form handler (your existing code)
 document.getElementById("reportForm").addEventListener("submit", async function (e) {
   e.preventDefault();
   console.log("Form submitted");
@@ -56,6 +92,7 @@ document.getElementById("reportForm").addEventListener("submit", async function 
       if (marker) {
         map.removeLayer(marker);
         marker = null;
+        selectedCoords = null;
       }
     } else {
       alert("Failed to submit report: " + result.error);
