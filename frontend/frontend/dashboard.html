@@ -5,19 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>UrbanEcho Dashboard</title>
 
+  <!-- Fonts & Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <link rel="stylesheet" href="dashboard.css" />
 </head>
 <body>
 
-  <!-- Navigation bar -->
+  <!-- Navigation -->
   <nav class="main-nav">
-    <a href="index.html" class="nav-link">Report Issue</a>
-    <a href="dashboard.html" class="nav-link">Dashboard</a>
+    <a href="index.html" class="nav-link" id="reportLink">Report Issue</a>
+    <a href="dashboard.html" class="nav-link" id="dashboardLink">Dashboard</a>
   </nav>
 
+  <!-- Content Container -->
   <div class="container">
+    <!-- Page Title -->
+    <h2 class="page-title">Live Complaint Dashboard</h2>
+
+    <!-- Filters -->
     <div class="filters">
       <label for="filterType">Filter by Issue Type:</label>
       <select id="filterType">
@@ -29,17 +35,26 @@
       </select>
     </div>
 
-    <div id="map" style="height: 600px; border-radius: 12px;"></div>
+    <!-- Summary Stats -->
+    <div class="stats">
+      <div class="stat-card">Total: <span id="totalCount">0</span></div>
+      <div class="stat-card">Pending: <span id="pendingCount">0</span></div>
+      <div class="stat-card">Resolved: <span id="resolvedCount">0</span></div>
+    </div>
+
+    <!-- Complaint Map -->
+    <div id="map"></div>
   </div>
 
+  <!-- Scripts -->
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="dashboard.js"></script>
   <script>
-    // Highlight active nav link
-    const navLinks = document.querySelectorAll('.main-nav .nav-link');
-    navLinks.forEach(link => {
-      if (link.getAttribute('href') === window.location.pathname.split('/').pop()) {
-        link.classList.add('active');
+    // Highlight the current nav link
+    const currentPage = window.location.pathname.split("/").pop();
+    document.querySelectorAll(".nav-link").forEach(link => {
+      if (link.getAttribute("href") === currentPage) {
+        link.classList.add("active");
       }
     });
   </script>
