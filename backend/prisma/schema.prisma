@@ -1,0 +1,20 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Complaint {
+  id          Int      @id @default(autoincrement())
+  issueType   String
+  description String?
+  imageUrl    String?
+  latitude    Float?
+  longitude   Float?
+  status      String   @default("pending")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
