@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>UrbanEcho - Report Issue</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">UrbanEcho</div>
+    <div class="tagline">Smart Reporting for Smart Cities</div>
+  </nav>
+
+  <!-- Complaint Form -->
+  <form id="reportForm">
+    <h2>Report a Civic Issue</h2>
+
+    <label for="issueType">Issue Type</label>
+    <select id="issueType" required>
+      <option value="">--Select--</option>
+      <option value="garbage">Garbage Dump</option>
+      <option value="pothole">Pothole</option>
+      <option value="streetlight">Streetlight Issue</option>
+      <option value="sewage">Sewage Overflow</option>
+    </select>
+
+    <label for="description">Description</label>
+    <input type="text" id="description" required placeholder="Brief description of the issue" />
+
+    <label for="image">Upload Image</label>
+    <input type="file" id="image" accept="image/*" required />
+
+    <label>Mark Location on Map</label>
+    <div id="map"></div>
+
+    <button type="submit">Submit Report</button>
+  </form>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

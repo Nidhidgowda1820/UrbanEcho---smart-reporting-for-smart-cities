@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UrbanEcho Dashboard</title>
+
+  <!-- Fonts & Styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="dashboard.css" />
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="main-nav">
+    <a href="index.html" class="nav-link" id="reportLink">Report Issue</a>
+    <a href="dashboard.html" class="nav-link" id="dashboardLink">Dashboard</a>
+  </nav>
+
+  <!-- Content Container -->
+  <div class="container">
+    <!-- Page Title -->
+    <h2 class="page-title">Live Complaint Dashboard</h2>
+
+    <!-- Filters -->
+    <div class="filters">
+      <label for="filterType">Filter by Issue Type:</label>
+      <select id="filterType">
+        <option value="all">All</option>
+        <option value="garbage">Garbage Dump</option>
+        <option value="pothole">Pothole</option>
+        <option value="streetlight">Streetlight Issue</option>
+        <option value="sewage">Sewage Overflow</option>
+      </select>
+    </div>
+
+    <!-- Summary Stats -->
+    <div class="stats">
+      <div class="stat-card">Total: <span id="totalCount">0</span></div>
+      <div class="stat-card">Pending: <span id="pendingCount">0</span></div>
+      <div class="stat-card">Resolved: <span id="resolvedCount">0</span></div>
+    </div>
+
+    <!-- Complaint Map -->
+    <div id="map"></div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="dashboard.js"></script>
+  <script>
+    // Highlight the current nav link
+    const currentPage = window.location.pathname.split("/").pop();
+    document.querySelectorAll(".nav-link").forEach(link => {
+      if (link.getAttribute("href") === currentPage) {
+        link.classList.add("active");
+      }
+    });
+  </script>
+</body>
+</html>
