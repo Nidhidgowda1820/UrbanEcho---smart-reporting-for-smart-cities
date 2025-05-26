@@ -1,67 +1,67 @@
-console.log("Script loaded");
+console.log("Script loaded!");
 
-let selectedCoords = null;
-let marker = null;
+// Default map location
+let selectedLat = null;
+let selectedLng = null;
 
-// Initialize Leaflet map
-const map = L.map('map').setView([20.5937, 78.9629], 5);
+const map = L.map('map').setView([17.385044, 78.486671], 6);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: '© OpenStreetMap contributors'
+  attribution: 'Map data © OpenStreetMap contributors',
 }).addTo(map);
 
-// Click on map to drop a marker
+let marker = null;
+
 map.on('click', function (e) {
-  selectedCoords = e.latlng;
+  selectedLat = e.latlng.lat;
+  selectedLng = e.latlng.lng;
 
   if (marker) {
-    map.removeLayer(marker);
+    marker.setLatLng(e.latlng);
+  } else {
+    marker = L.marker(e.latlng).addTo(map);
   }
-
-  marker = L.marker(selectedCoords).addTo(map);
 });
 
-// Submit form
 document.getElementById("reportForm").addEventListener("submit", async function (e) {
   e.preventDefault();
-  console.log("Form submitted");
+
+  console.log("Submitting form...");
 
   const issueType = document.getElementById("issueType").value;
   const description = document.getElementById("description").value;
-  const imageFile = document.getElementById("image").files[0];
+  // const imageFile = document.getElementById("image").files[0];
 
-  if (!selectedCoords || !imageFile) {
-    alert("Please upload an image and select a location.");
-    return;
-  }
+  // if (!selectedLat || !selectedLng) {
+  //   alert("Please mark a location on the map.");
+  //   return;
+  // }
 
   const formData = new FormData();
   formData.append("issueType", issueType);
   formData.append("description", description);
-  formData.append("image", imageFile);
-  formData.append("latitude", selectedCoords.lat);
-  formData.append("longitude", selectedCoords.lng);
+  // formData.append("image", imageFile);
+  formData.append("latitude", selectedLat);
+  formData.append("longitude", selectedLng);
 
   try {
-    const response = await fetch("http://localhost:3000/complaints", {
+    const response = await fetch("http://127.0.0.1:3000/complaints", {
       method: "POST",
       body: formData
     });
 
     const result = await response.json();
-    console.log("Backend response:", result);
 
     if (response.ok) {
       alert("Report submitted successfully!");
-      document.getElementById("reportForm").reset();
-      if (marker) {
-        map.removeLayer(marker);
-        marker = null;
-      }
+      this.reset();
+      marker?.remove();
+      marker = null;
     } else {
-      alert("Failed to submit report: " + (result.error || "Unknown error"));
+      console.error("Submission failed:", result);
+      alert("Failed to submit report.");
     }
   } catch (err) {
-    console.error("Error sending report:", err);
+    console.error("Error submitting report:", err.message,err);
     alert("Something went wrong. Check the console.");
   }
 });
