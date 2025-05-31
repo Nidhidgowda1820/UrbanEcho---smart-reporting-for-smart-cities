@@ -1,4 +1,5 @@
 const cloudinary = require('cloudinary').v2;
+const fs = require('fs');
 require('dotenv').config();
 
 cloudinary.config({
@@ -12,9 +13,16 @@ const uploadImage = async (filePath) => {
     const result = await cloudinary.uploader.upload(filePath, {
       folder: 'civic-platform',
     });
+
+    console.log("Cloudinary upload successful:", result.secure_url);
+
+    // Delete local temp file after upload
+    fs.unlinkSync(filePath);
+
     return result.secure_url;
   } catch (error) {
-    throw new Error('Cloudinary upload failed: ' + error.message);
+    console.error("Cloudinary upload failed:", error.message);
+    return null;
   }
 };
 
