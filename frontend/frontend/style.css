@@ -65,7 +65,7 @@ label {
   color: #333;
 }
 
-/* Inputs, Selects, Button */
+/* Inputs, Selects, Button form users */
 
 input, select, button {
   width: 100%;
@@ -85,7 +85,7 @@ input:focus, select:focus {
   box-shadow: 0 0 5px rgba(8, 66, 152, 0.3);
 }
 
-/* Button */
+/* Button  */
 
 button {
   background-color: #084298;
