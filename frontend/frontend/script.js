@@ -1,9 +1,10 @@
 console.log("Script loaded!");
 
-// Default map location
+// Default map location (India centered)
 let selectedLat = null;
 let selectedLng = null;
 
+// Initialize Leaflet map
 const map = L.map('map').setView([17.385044, 78.486671], 6);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: 'Map data © OpenStreetMap contributors',
@@ -11,6 +12,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 let marker = null;
 
+// Map click event to select location
 map.on('click', function (e) {
   selectedLat = e.latlng.lat;
   selectedLng = e.latlng.lng;
@@ -22,6 +24,7 @@ map.on('click', function (e) {
   }
 });
 
+// Form submission handler
 document.getElementById("reportForm").addEventListener("submit", async function (e) {
   e.preventDefault();
 
@@ -29,17 +32,19 @@ document.getElementById("reportForm").addEventListener("submit", async function 
 
   const issueType = document.getElementById("issueType").value;
   const description = document.getElementById("description").value;
-  // const imageFile = document.getElementById("image").files[0];
+  const imageFile = document.getElementById("image")?.files[0];
 
-  // if (!selectedLat || !selectedLng) {
-  //   alert("Please mark a location on the map.");
-  //   return;
-  // }
+  if (!selectedLat || !selectedLng) {
+    alert("📍 Please mark a location on the map.");
+    return;
+  }
 
   const formData = new FormData();
   formData.append("issueType", issueType);
   formData.append("description", description);
-  // formData.append("image", imageFile);
+  if (imageFile) {
+    formData.append("image", imageFile);
+  }
   formData.append("latitude", selectedLat);
   formData.append("longitude", selectedLng);
 
@@ -49,19 +54,36 @@ document.getElementById("reportForm").addEventListener("submit", async function 
       body: formData
     });
 
-    const result = await response.json();
+    if (!response.ok) {
+      let errorText = "Unknown error";
+      try {
+        const errorData = await response.json();
+        errorText = errorData.error || errorText;
+      } catch (_) {
+        // ignore
+      }
 
-    if (response.ok) {
-      alert("Report submitted successfully!");
-      this.reset();
-      marker?.remove();
-      marker = null;
-    } else {
-      console.error("Submission failed:", result);
-      alert("Failed to submit report.");
+      console.error("❌ Submission failed:", errorText);
+      alert("❌ Failed to submit report: " + errorText);
+      return;
     }
+
+    const result = await response.json();
+    console.log("✅ Report submitted:", result);
+
+    alert("✅ Report submitted successfully!");
+    this.reset();
+
+    if (marker) {
+      map.removeLayer(marker);
+      marker = null;
+    }
+
+    selectedLat = null;
+    selectedLng = null;
+
   } catch (err) {
-    console.error("Error submitting report:", err.message,err);
-    alert("Something went wrong. Check the console.");
+    console.error("❌ Error submitting report:", err);
+    alert("⚠ Something went wrong. Please check the console.");
   }
 });
