@@ -8,8 +8,6 @@ body {
   color: #222;
 }
 
-/* Navbar */
-
 .navbar {
   background-color: #084298;
   padding: 20px 40px;
@@ -32,8 +30,6 @@ body {
   opacity: 0.9;
 }
 
-/* Form Card */
-
 form {
   max-width: 720px;
   background-color: #ffffff;
@@ -46,8 +42,6 @@ form {
   font-style: italic;
 }
 
-/* Headline */
-
 h2 {
   text-align: center;
   color: #084298bc;
@@ -56,16 +50,12 @@ h2 {
   font-style: italic;
 }
 
-/* Labels */
-
 label {
   font-weight: 600;
   margin-top: 20px;
   display: block;
   color: #333;
 }
-
-/* Inputs, Selects, Button form users */
 
 input, select, button {
   width: 100%;
@@ -85,8 +75,6 @@ input:focus, select:focus {
   box-shadow: 0 0 5px rgba(8, 66, 152, 0.3);
 }
 
-/* Button  */
-
 button {
   background-color: #084298;
   color: white;
@@ -98,11 +86,10 @@ button {
 }
 
 button:hover {
-  background-color: #052c65;
-  transform: scale(1.03);
+  background-color: #063170;
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
-
-/* Map */
 
 #map {
   height: 300px;
@@ -110,8 +97,6 @@ button:hover {
   border: 2px solid #ccc;
   border-radius: 10px;
 }
-
-/* Fade-in */
 
 @keyframes fadeIn {
   from {
